@@ -56,6 +56,12 @@ public class GlobalExceptionHandler {
                 .body(new ApiErrorResponseDto(ex.getStatus().value(),ex.getMessage()));
     }
 
+    @ExceptionHandler(InvalidUploadException.class)
+    public ResponseEntity<ApiErrorResponseDto> handleException(InvalidUploadException ex) {
+        return ResponseEntity.status(ex.getStatus())
+                .body(new ApiErrorResponseDto(ex.getStatus().value(),ex.getMessage()));
+    }
+
 //    @ExceptionHandler(AccessDeniedException.class)
 //    public ResponseEntity<ApiErrorResponseDto> handleException(AccessDeniedException ex) {
 //        return ResponseEntity.status(HttpStatus.FORBIDDEN)
