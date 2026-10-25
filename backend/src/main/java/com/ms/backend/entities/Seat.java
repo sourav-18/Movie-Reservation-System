@@ -1,6 +1,8 @@
 package com.ms.backend.entities;
 
+import com.ms.backend.entities.types.SeatStatus;
 import com.ms.backend.entities.types.SeatTypes;
+import com.ms.backend.entities.types.ShowTimeStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,5 +33,9 @@ public class Seat {
     @ManyToOne
     @JoinColumn(name = "screen_id",nullable = false)
     private Screen screen;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SeatStatus status;
 
 }
