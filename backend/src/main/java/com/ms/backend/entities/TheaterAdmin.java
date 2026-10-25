@@ -1,5 +1,6 @@
 package com.ms.backend.entities;
 
+import com.ms.backend.entities.types.TheaterAdminStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +21,8 @@ public class TheaterAdmin {
 
     @Column(nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TheaterAdminStatus status=TheaterAdminStatus.ACTIVE;
 }

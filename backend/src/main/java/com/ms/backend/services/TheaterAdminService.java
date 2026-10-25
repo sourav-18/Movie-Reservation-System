@@ -7,6 +7,7 @@ import com.ms.backend.exceptions.EmailAlreadyExistException;
 import com.ms.backend.mapper.TheaterAdminMapper;
 import com.ms.backend.repositories.TheaterAdminRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ public class TheaterAdminService {
 
     private final TheaterAdminRepository theaterAdminRepository;
     private final TheaterAdminMapper theaterAdminMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public TheaterAdminDto create(TheaterAdminCreateDto body) {
         TheaterAdmin entity = theaterAdminMapper.toEntity(body);
@@ -23,7 +25,7 @@ public class TheaterAdminService {
         if (isEmailAlreadyExist != null) {
             throw new EmailAlreadyExistException("Email already exists");
         }
-
+        entity.setPassword(passwordEncoder.encode(body.getPassword()));
         theaterAdminRepository.save(entity);
         return theaterAdminMapper.toDto(entity);
     }
