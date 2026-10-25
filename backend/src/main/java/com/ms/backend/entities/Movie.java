@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name="movies")
+@Table(name = "movies")
 @Getter
 @Setter
 public class Movie {
@@ -25,9 +27,9 @@ public class Movie {
     @Column(nullable = false)
     private int duration; //in minute
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @ManyToMany
+    @JoinTable(name = "movie_categories")
+    private List<Category> category;
 
     @ManyToOne
     @JoinColumn(name = "crated_by")
