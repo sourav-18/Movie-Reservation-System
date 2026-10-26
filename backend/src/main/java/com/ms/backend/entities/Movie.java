@@ -1,8 +1,7 @@
 package com.ms.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -10,13 +9,16 @@ import java.util.List;
 @Table(name = "movies")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     @Column(nullable = false)
     private String description;
@@ -28,8 +30,17 @@ public class Movie {
     private int duration; //in minute
 
     @ManyToMany
-    @JoinTable(name = "movie_categories")
-    private List<Category> category;
+    @JoinTable(name = "movie_categories",
+            joinColumns = @JoinColumn(
+                    name = "movie_id",
+                    referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "category_id",
+                    referencedColumnName = "id"
+            )
+    )
+    private List<Category> categories;
 
     @ManyToOne
     @JoinColumn(name = "crated_by")

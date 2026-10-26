@@ -35,6 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if(!jwtService.isTokenExpired(token)){
                 Claims claims = jwtService.verifySignatureAdnExtractAllClaims(token);
                 String role=claims.get("Role",String.class);
+                request.setAttribute("auth-id",claims.getSubject());
                 List<SimpleGrantedAuthority> simpleGrantedAuthorities= List.of(new SimpleGrantedAuthority("ROLE_"+role));
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(claims.getSubject(),null,simpleGrantedAuthorities);
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -11,7 +11,7 @@ import java.util.List;
 public class MovieCreateDto {
     @Size(max = 100,min = 2)
     @NotBlank
-    private String name;
+    private String title;
 
     @Size(max = 100,min = 20)
     @NotBlank
