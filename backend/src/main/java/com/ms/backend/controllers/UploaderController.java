@@ -2,8 +2,8 @@ package com.ms.backend.controllers;
 
 import com.ms.backend.dtos.response.ApiResponseDto;
 import com.ms.backend.services.UploaderService;
+import com.ms.backend.services.UploaderServiceImpl;
 import com.ms.backend.utils.UploadValidateUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +25,7 @@ public class UploaderController {
     @PostMapping("/movie-thumbnail")
     public ResponseEntity<ApiResponseDto<String>> movieThumbnailUpload(@RequestParam("file") MultipartFile file) throws IOException {
         uploadValidateUtil.validate(file);
-        String path = uploaderService.uploadInCloudinary(file);
+        String path = uploaderService.upload(file,"movie/thumbnail");
         return ResponseEntity.ok(new ApiResponseDto<>(200, "file upload successfully", path));
     }
 }
