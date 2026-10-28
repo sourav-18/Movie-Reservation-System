@@ -1,11 +1,11 @@
 package com.ms.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 @Table(name="theaters")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Theater {
 
     @Id
@@ -26,7 +30,7 @@ public class Theater {
     private City city;
 
     @ManyToOne
-    @JoinColumn(name = "crated_by")
+    @JoinColumn(name = "crated_by",nullable = false)
     private Admin createdBy;
 
     @CreatedDate

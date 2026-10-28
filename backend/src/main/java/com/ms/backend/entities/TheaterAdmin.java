@@ -16,13 +16,17 @@ public class TheaterAdmin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
+    @ManyToOne
+    @JoinColumn(name = "theater_id", nullable = false)
+    private Theater theater;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TheaterAdminStatus status=TheaterAdminStatus.ACTIVE;
+    private TheaterAdminStatus status = TheaterAdminStatus.ACTIVE;
 }

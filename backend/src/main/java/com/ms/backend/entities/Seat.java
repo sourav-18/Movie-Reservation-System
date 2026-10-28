@@ -4,13 +4,15 @@ import com.ms.backend.entities.types.SeatStatus;
 import com.ms.backend.entities.types.SeatTypes;
 import com.ms.backend.entities.types.ShowTimeStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "seats")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +39,9 @@ public class Seat {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SeatStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "crated_by",nullable = false)
+    private TheaterAdmin createdBy;
 
 }
