@@ -28,6 +28,7 @@ public class InvalidUrlFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
+        System.out.println("-----------------------enter in InvalidUrlFilter-----------------------");
 
         try {
             HandlerExecutionChain handler =
@@ -45,6 +46,7 @@ public class InvalidUrlFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
+            System.out.println("enter--------------------------------------------------");
             throw new ServletException(e);
         }
 

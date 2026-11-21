@@ -62,6 +62,12 @@ public class GlobalExceptionHandler {
                 .body(new ApiErrorResponseDto(ex.getStatus().value(),ex.getMessage()));
     }
 
+    @ExceptionHandler(SeatAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponseDto> handleException(SeatAlreadyExistsException ex) {
+        return ResponseEntity.status(400)
+                .body(new ApiErrorResponseDto(400,ex.getMessage()));
+    }
+
 //    @ExceptionHandler(AccessDeniedException.class)
 //    public ResponseEntity<ApiErrorResponseDto> handleException(AccessDeniedException ex) {
 //        return ResponseEntity.status(HttpStatus.FORBIDDEN)

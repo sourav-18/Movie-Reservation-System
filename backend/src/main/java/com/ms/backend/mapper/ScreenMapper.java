@@ -23,7 +23,6 @@ public class ScreenMapper {
                 .id(entity.getId())
                 .theaterId(entity.getTheater().getId())
                 .name(entity.getName())
-                .seats(entity.getSeats().stream().map(SeatMapper::toDto).toList())
                 .build();
 
     }

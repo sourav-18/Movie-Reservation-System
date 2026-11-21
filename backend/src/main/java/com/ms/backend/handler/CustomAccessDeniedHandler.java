@@ -12,6 +12,8 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+import static jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+
 
 @Component
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class CustomAccessDeniedHandler
         ApiErrorResponseDto errorResponse=new ApiErrorResponseDto(403,
                 "You don't have permission to access this resource");
 
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setStatus(SC_FORBIDDEN);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         objectMapper.writeValue(

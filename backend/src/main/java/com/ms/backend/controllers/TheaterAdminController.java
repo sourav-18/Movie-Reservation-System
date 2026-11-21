@@ -6,15 +6,19 @@ import com.ms.backend.dtos.response.ApiResponseDto;
 import com.ms.backend.dtos.response.ScreenDto;
 import com.ms.backend.dtos.response.SeatListDto;
 import com.ms.backend.dtos.response.TheaterDto;
+import com.ms.backend.entities.Screen;
 import com.ms.backend.services.ScreenService;
 import com.ms.backend.services.SeatService;
 import com.ms.backend.services.TheaterService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/theater-admins")
@@ -36,18 +40,26 @@ public class TheaterAdminController {
     }
 
     @PostMapping("/theater/screen")
-    public ResponseEntity<ApiResponseDto<ScreenDto>> screenCreate(HttpServletRequest request, @Valid @RequestBody  ScreenCreateDto body) {
+    public ResponseEntity<ApiResponseDto<ScreenDto>> screenCreate(HttpServletRequest request, @Valid @RequestBody ScreenCreateDto body) {
         Long theaterAdminId = Long.valueOf((String) request.getAttribute("auth-id"));
-        ScreenDto screenDto = screenService.createScreen(body,theaterAdminId);
+        ScreenDto screenDto = screenService.createScreen(body, theaterAdminId);
         ApiResponseDto<ScreenDto> apiResponse =
                 new ApiResponseDto<>(201, "Screen create successfully", screenDto);
         return ResponseEntity.status(201).body(apiResponse);
     }
 
+    @GetMapping("/theater/{theaterId}/screen")
+    public ResponseEntity<ApiResponseDto<List<ScreenDto>>> getMyTheaterDetails(@PathVariable("theaterId") Long theaterId) {
+        List<ScreenDto> screens= screenService.getScreenByTheater(theaterId);
+        ApiResponseDto<List<ScreenDto>> apiResponse =
+                new ApiResponseDto<>(200, "Theater screen fetch successfully",screens);
+        return ResponseEntity.status(200).body(apiResponse);
+    }
+
     @PostMapping("/theater/screen/seats")
     public ResponseEntity<ApiResponseDto<SeatListDto>> seatCreate(HttpServletRequest request, @Valid @RequestBody SeatListCreateDto body) {
         Long theaterAdminId = Long.valueOf((String) request.getAttribute("auth-id"));
-        SeatListDto seatListDto = seatService.create(body,theaterAdminId);
+        SeatListDto seatListDto = seatService.create(body, theaterAdminId);
         ApiResponseDto<SeatListDto> apiResponse =
                 new ApiResponseDto<>(201, "Seat create successfully", seatListDto);
         return ResponseEntity.status(201).body(apiResponse);

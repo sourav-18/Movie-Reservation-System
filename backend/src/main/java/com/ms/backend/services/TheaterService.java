@@ -53,4 +53,6 @@ public class TheaterService {
                 .orElseThrow(() -> new DataNotFoundException("Theater admin not found"));
         return TheaterMapper.toDto(theaterAdmin.getTheater());
     }
+
+
 }

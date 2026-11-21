@@ -7,6 +7,7 @@ import com.ms.backend.entities.Screen;
 import com.ms.backend.entities.Seat;
 import com.ms.backend.entities.Theater;
 import com.ms.backend.entities.TheaterAdmin;
+import com.ms.backend.entities.types.SeatStatus;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class SeatMapper {
                 .rowNumber(dto.getRowNumber())
                 .columnNumber(dto.getColumnNumber())
                 .screen(screen)
+                .status(SeatStatus.ACTIVE)
                 .theater(theater)
                 .createdBy(theaterAdmin)
                 .build();

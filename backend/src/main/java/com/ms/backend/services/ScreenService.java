@@ -13,6 +13,9 @@ import com.ms.backend.repositories.TheaterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class ScreenService {
@@ -30,5 +33,13 @@ public class ScreenService {
         screenRepository.save(newScreen);
 
         return ScreenMapper.toDto(newScreen);
+    }
+
+    public List<ScreenDto> getScreenByTheater(Long theaterId) {
+        List<Screen> screens = screenRepository.findByTheater(theaterRepository.getReferenceById(theaterId));
+        if(screens.isEmpty()){
+            throw new DataNotFoundException("Theater id not found");
+        }
+        return screens.stream().map(ScreenMapper::toDto).toList();
     }
 }

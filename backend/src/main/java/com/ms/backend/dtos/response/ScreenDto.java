@@ -14,5 +14,4 @@ public class ScreenDto {
     private Long id;
     private Long theaterId;
     private String name;
-    private List<SeatDto> seats;
 }
