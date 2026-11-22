@@ -1,6 +1,7 @@
 package com.ms.backend.repositories;
 
 import com.ms.backend.dtos.DbInternal.RowColDbDto;
+import com.ms.backend.dtos.response.SeatDto;
 import com.ms.backend.entities.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,12 +12,29 @@ import java.util.List;
 
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Long> {
-   @Query("""
-       SELECT s.rowNumber AS rowNumber,
-              s.columnNumber AS columnNumber
-       FROM Seat s
-       WHERE s.screen.id = :screenId
-       """)
-   List<RowColDbDto> getRowAndColumnByScreenId(
-           @Param("screenId") Long screenId);
+    @Query("""
+            SELECT s.rowNumber AS rowNumber,
+                   s.columnNumber AS columnNumber
+            FROM Seat s
+            WHERE s.screen.id = :screenId
+            """)
+    List<RowColDbDto> getRowAndColumnByScreenId(
+            @Param("screenId") Long screenId);
+
+    @Query("""
+            SELECT new com.ms.backend.dtos.response.SeatDto(
+            s.id AS id,
+            s.seatType AS seatType,
+            s.status AS status,
+            s.rowNumber AS rowNumber,
+            s.columnNumber AS columnNumber
+            )
+            FROM Seat s
+            WHERE s.screen.id = :screenId
+            AND s.theater.id = :theaterId
+            """)
+    List<SeatDto> findSeatByScreenId(
+            @Param("screenId") Long screenId,
+            @Param("theaterId") Long theaterId
+    );
 }

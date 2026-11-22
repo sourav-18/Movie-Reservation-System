@@ -25,7 +25,7 @@ public class AdminController {
     @PostMapping("/theaters")
         public ResponseEntity<ApiResponseDto<TheaterDto>> create(HttpServletRequest request, @Valid @RequestBody TheaterCreateDto body) {
         Long adminId = Long.valueOf((String) request.getAttribute("auth-id"));
-        TheaterDto theaterDto = theaterService.create(body,adminId);
+        TheaterDto theaterDto = theaterService.create(body, adminId);
         ApiResponseDto<TheaterDto> apiResponse =
                 new ApiResponseDto<>(201, "Theater Create successfully", theaterDto);
         return ResponseEntity.status(201).body(apiResponse);

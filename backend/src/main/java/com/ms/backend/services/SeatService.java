@@ -48,7 +48,7 @@ public class SeatService {
             String key = inputSeat.getRowNumber() + "-" + inputSeat.getColumnNumber();
 
             if (existingSeats.contains(key)) {
-                throw new SeatAlreadyExistsException(inputSeat.getRowNumber(),inputSeat.getColumnNumber());
+                throw new SeatAlreadyExistsException(inputSeat.getRowNumber(), inputSeat.getColumnNumber());
             }
         });
 
@@ -60,6 +60,18 @@ public class SeatService {
 
         List<SeatDto> seatDtos = newSeats.stream().map(SeatMapper::toDto).toList();
         return SeatMapper.toDto(seatDtos, screen, theater);
+    }
+
+    public List<SeatDto> getSeatByScreen(Long theaterAdminId, Long screenId) {
+        TheaterAdmin theaterAdmin = theaterAdminRepository.findById(theaterAdminId)
+                .orElseThrow(() -> new DataNotFoundException("Theater admin id not found"));
+        Long theaterId = theaterAdmin.getTheater().getId();
+
+        List<SeatDto> seatDtos = seatRepository.findSeatByScreenId(screenId, theaterId);
+        if (seatDtos.isEmpty()) {
+            throw new DataNotFoundException("seat are not present in this theater");
+        }
+        return seatDtos;
     }
 
 }

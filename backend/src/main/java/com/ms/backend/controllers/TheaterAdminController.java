@@ -2,10 +2,7 @@ package com.ms.backend.controllers;
 
 import com.ms.backend.dtos.request.ScreenCreateDto;
 import com.ms.backend.dtos.request.SeatListCreateDto;
-import com.ms.backend.dtos.response.ApiResponseDto;
-import com.ms.backend.dtos.response.ScreenDto;
-import com.ms.backend.dtos.response.SeatListDto;
-import com.ms.backend.dtos.response.TheaterDto;
+import com.ms.backend.dtos.response.*;
 import com.ms.backend.entities.Screen;
 import com.ms.backend.services.ScreenService;
 import com.ms.backend.services.SeatService;
@@ -48,9 +45,12 @@ public class TheaterAdminController {
         return ResponseEntity.status(201).body(apiResponse);
     }
 
-    @GetMapping("/theater/{theaterId}/screen")
-    public ResponseEntity<ApiResponseDto<List<ScreenDto>>> getMyTheaterDetails(@PathVariable("theaterId") Long theaterId) {
-        List<ScreenDto> screens= screenService.getScreenByTheater(theaterId);
+    @GetMapping("/theater/screen")
+    public ResponseEntity<ApiResponseDto<List<ScreenDto>>> getMyTheaterScreenDetails(
+            HttpServletRequest request
+            ) {
+        Long theaterAdminId = Long.valueOf((String) request.getAttribute("auth-id"));
+        List<ScreenDto> screens= screenService.getScreenByTheater(theaterAdminId);
         ApiResponseDto<List<ScreenDto>> apiResponse =
                 new ApiResponseDto<>(200, "Theater screen fetch successfully",screens);
         return ResponseEntity.status(200).body(apiResponse);
@@ -63,6 +63,18 @@ public class TheaterAdminController {
         ApiResponseDto<SeatListDto> apiResponse =
                 new ApiResponseDto<>(201, "Seat create successfully", seatListDto);
         return ResponseEntity.status(201).body(apiResponse);
+    }
+
+    @GetMapping("/theater/screen/{screenId}/seats")
+    public ResponseEntity<ApiResponseDto<List<SeatDto>>> getMyTheaterScreen(
+            HttpServletRequest request,
+            @PathVariable("screenId") Long screenId
+    ) {
+        Long theaterAdminId = Long.valueOf((String) request.getAttribute("auth-id"));
+        List<SeatDto> screens= seatService.getSeatByScreen(theaterAdminId,screenId);
+        ApiResponseDto<List<SeatDto>> apiResponse =
+                new ApiResponseDto<>(200, "Theater screen seats fetch successfully",screens);
+        return ResponseEntity.status(200).body(apiResponse);
     }
 
 

@@ -35,9 +35,11 @@ public class ScreenService {
         return ScreenMapper.toDto(newScreen);
     }
 
-    public List<ScreenDto> getScreenByTheater(Long theaterId) {
-        List<Screen> screens = screenRepository.findByTheater(theaterRepository.getReferenceById(theaterId));
-        if(screens.isEmpty()){
+    public List<ScreenDto> getScreenByTheater(Long theaterAdminId) {
+        TheaterAdmin theaterAdmin = theaterAdminRepository.findById(theaterAdminId)
+                .orElseThrow(() -> new DataNotFoundException("Theater admin id not found"));
+        List<Screen> screens = screenRepository.findByTheater(theaterAdmin.getTheater());
+        if (screens.isEmpty()) {
             throw new DataNotFoundException("Theater id not found");
         }
         return screens.stream().map(ScreenMapper::toDto).toList();
