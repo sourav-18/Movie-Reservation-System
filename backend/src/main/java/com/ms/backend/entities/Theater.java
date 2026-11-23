@@ -1,5 +1,7 @@
 package com.ms.backend.entities;
 
+import com.ms.backend.entities.types.TheaterAdminStatus;
+import com.ms.backend.entities.types.TheaterStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,6 +31,10 @@ public class Theater {
     @JoinColumn(name = "city_id")
     private City city;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TheaterStatus status = TheaterStatus.ACTIVE;
+
     @ManyToOne
     @JoinColumn(name = "crated_by",nullable = false)
     private Admin createdBy;
@@ -38,5 +44,6 @@ public class Theater {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
 
 }

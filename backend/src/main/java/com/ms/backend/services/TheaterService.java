@@ -2,6 +2,7 @@ package com.ms.backend.services;
 
 import com.ms.backend.dtos.request.TheaterAdminCreateDto;
 import com.ms.backend.dtos.request.TheaterCreateDto;
+import com.ms.backend.dtos.response.TheaterDetailsDto;
 import com.ms.backend.dtos.response.TheaterDto;
 import com.ms.backend.entities.City;
 import com.ms.backend.entities.Theater;
@@ -15,8 +16,14 @@ import com.ms.backend.repositories.CityRepository;
 import com.ms.backend.repositories.TheaterAdminRepository;
 import com.ms.backend.repositories.TheaterRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -48,10 +55,19 @@ public class TheaterService {
         return TheaterMapper.toDto(newTheater);
     }
 
-    public TheaterDto getMyTheaterDetails(Long theaterAdminId){
+    public TheaterDto getMyTheaterDetails(Long theaterAdminId) {
         TheaterAdmin theaterAdmin = theaterAdminRepository.findById(theaterAdminId)
                 .orElseThrow(() -> new DataNotFoundException("Theater admin not found"));
         return TheaterMapper.toDto(theaterAdmin.getTheater());
+    }
+
+    public List<TheaterDetailsDto> getTheaters(int page, int limit) {
+        Pageable pageable = PageRequest.of(page-1, limit, Sort.by("id").descending());
+        Page<Theater> theaters = theaterRepository.findAll(pageable);
+        if (theaters.isEmpty()) {
+            throw new DataNotFoundException("Theater not found");
+        }
+        return theaters.get().map(TheaterMapper::toDetailsDto).toList();
     }
 
 
