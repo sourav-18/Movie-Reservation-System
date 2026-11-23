@@ -9,15 +9,15 @@ import java.util.List;
 @Getter
 @Setter
 public class MovieCreateDto {
-    @Size(max = 100,min = 2)
+    @Size(min = 2,max = 100)
     @NotBlank
     private String title;
 
-    @Size(max = 100,min = 20)
+    @Size(min = 20,max = 5000)
     @NotBlank
     private String description;
 
-    @Size(max = 100,min = 5)
+    @Size(min = 5,max = 500)
     @NotBlank
     private String thumbnail;
 

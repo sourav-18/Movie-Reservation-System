@@ -1,6 +1,8 @@
 package com.ms.backend.services;
 
 import com.ms.backend.dtos.request.MovieCreateDto;
+import com.ms.backend.dtos.request.MovieStatusUpdateDto;
+import com.ms.backend.dtos.request.TheaterStatusUpdateDto;
 import com.ms.backend.dtos.response.MovieDto;
 import com.ms.backend.entities.Category;
 import com.ms.backend.entities.Movie;
@@ -11,9 +13,15 @@ import com.ms.backend.repositories.AdminRepository;
 import com.ms.backend.repositories.CategoryRepository;
 import com.ms.backend.repositories.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.security.PublicKey;
 import java.util.List;
 
 @Service
@@ -38,4 +46,22 @@ public class MovieService {
 
         return MovieMapper.toDto(newMovie);
     }
+
+    public List<MovieDto> listForAdmin(int page, int limit) {
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("id").descending());
+        Page<Movie> movies = movieRepository.findAll(pageable);
+        if (movies.isEmpty()) {
+            throw new DataNotFoundException("movie not found");
+        }
+        return movies.get().map(MovieMapper::toDto).toList();
+    }
+
+    @Transactional
+    public void statusUpdate(MovieStatusUpdateDto body) {
+        Integer isUpdate = movieRepository.statusUpdate(body.getId(), body.getStatus());
+        if (isUpdate == 0) {
+            throw new DataNotFoundException("Movie not found");
+        }
+    }
+
 }

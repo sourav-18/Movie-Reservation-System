@@ -2,11 +2,14 @@ package com.ms.backend.services;
 
 import com.ms.backend.dtos.request.TheaterAdminCreateDto;
 import com.ms.backend.dtos.request.TheaterCreateDto;
+import com.ms.backend.dtos.request.TheaterStatusUpdateDto;
+import com.ms.backend.dtos.request.TheaterUpdateDto;
 import com.ms.backend.dtos.response.TheaterDetailsDto;
 import com.ms.backend.dtos.response.TheaterDto;
 import com.ms.backend.entities.City;
 import com.ms.backend.entities.Theater;
 import com.ms.backend.entities.TheaterAdmin;
+import com.ms.backend.entities.types.TheaterStatus;
 import com.ms.backend.exceptions.DataNotFoundException;
 import com.ms.backend.exceptions.EmailAlreadyExistException;
 import com.ms.backend.mapper.TheaterAdminMapper;
@@ -23,6 +26,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -62,12 +66,36 @@ public class TheaterService {
     }
 
     public List<TheaterDetailsDto> getTheaters(int page, int limit) {
-        Pageable pageable = PageRequest.of(page-1, limit, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("id").descending());
         Page<Theater> theaters = theaterRepository.findAll(pageable);
         if (theaters.isEmpty()) {
             throw new DataNotFoundException("Theater not found");
         }
+        String ans = "dddf";
+        char[] charArray = ans.toCharArray();
+        Arrays.sort(charArray);
         return theaters.get().map(TheaterMapper::toDetailsDto).toList();
+    }
+
+    @Transactional
+    public void statusUpdate(TheaterStatusUpdateDto body) {
+        Integer isUpdate = theaterRepository.statusUpdate(body.getId(), body.getStatus());
+        if (isUpdate == 0) {
+            throw new DataNotFoundException("Theater not found");
+        }
+    }
+
+    @Transactional
+    public TheaterDto update(TheaterUpdateDto body) {
+        Theater theater = theaterRepository.findById(body.getId())
+                .orElseThrow(() -> new DataNotFoundException("Theater not found"));
+
+        City city = cityRepository.findById(body.getCityId())
+                .orElseThrow(() -> new DataNotFoundException("City id not found"));
+
+        theater.setName(body.getName());
+        theater.setCity(city);
+        return TheaterMapper.toDto(theater);
     }
 
 

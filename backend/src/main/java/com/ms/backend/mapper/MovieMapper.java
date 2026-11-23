@@ -6,6 +6,7 @@ import com.ms.backend.dtos.response.MovieDto;
 import com.ms.backend.entities.Admin;
 import com.ms.backend.entities.Category;
 import com.ms.backend.entities.Movie;
+import com.ms.backend.entities.types.MovieStatus;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class MovieMapper {
                 .duration(dto.getDuration())
                 .thumbnail(dto.getThumbnail())
                 .categories(categories)
+                .status(MovieStatus.ACTIVE)
                 .createdBy(admin)
                 .build();
     }
@@ -30,6 +32,7 @@ public class MovieMapper {
                 .duration(entity.getDuration())
                 .thumbnail(entity.getThumbnail())
                 .categories(categoryDto)
+                .status(entity.getStatus())
                 .build();
     }
 }

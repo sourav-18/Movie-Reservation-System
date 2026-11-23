@@ -2,6 +2,7 @@ package com.ms.backend.dtos.response;
 
 
 import com.ms.backend.entities.Category;
+import com.ms.backend.entities.types.MovieStatus;
 import lombok.*;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public class MovieDto {
     private String thumbnail;
     private int duration;
     private List<CategoryDto> categories;
+    private MovieStatus status;
 }

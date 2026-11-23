@@ -1,5 +1,7 @@
 package com.ms.backend.entities;
 
+import com.ms.backend.entities.types.MovieStatus;
+import com.ms.backend.entities.types.TheaterStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +30,10 @@ public class Movie {
 
     @Column(nullable = false)
     private int duration; //in minute
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MovieStatus status = MovieStatus.ACTIVE;
 
     @ManyToMany
     @JoinTable(name = "movie_categories",

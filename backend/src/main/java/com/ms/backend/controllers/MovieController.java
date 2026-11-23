@@ -19,15 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MovieController {
 
-    private final MovieService movieService;
 
-    @PreAuthorize("hasRole('admin')")
-    @PostMapping
-    public ResponseEntity<ApiResponseDto<MovieDto>> create(HttpServletRequest request, @Valid @RequestBody MovieCreateDto dto) {
-        Long adminId = Long.valueOf((String) request.getAttribute("auth-id"));
-        MovieDto movieDto = movieService.create(dto, adminId);
-        ApiResponseDto<MovieDto> apiResponse =
-                new ApiResponseDto<>(201, "movie create successfully", movieDto);
-        return ResponseEntity.status(201).body(apiResponse);
-    }
+
 }
