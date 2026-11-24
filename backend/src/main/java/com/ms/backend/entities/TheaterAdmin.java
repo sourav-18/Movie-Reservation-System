@@ -23,7 +23,7 @@ public class TheaterAdmin {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "theater_id", nullable = false)
+    @JoinColumn(name = "theater_id", nullable = false,updatable = false)
     private Theater theater;
 
     @Enumerated(EnumType.STRING)

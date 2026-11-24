@@ -4,6 +4,7 @@ import com.ms.backend.entities.types.MovieStatus;
 import com.ms.backend.entities.types.TheaterStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.List;
 
@@ -49,6 +50,6 @@ public class Movie {
     private List<Category> categories;
 
     @ManyToOne
-    @JoinColumn(name = "crated_by")
+    @JoinColumn(name = "crated_by",updatable = false)
     private Admin createdBy;
 }

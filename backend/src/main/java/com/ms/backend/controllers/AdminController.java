@@ -2,11 +2,9 @@ package com.ms.backend.controllers;
 
 import com.ms.backend.data.ConstantData;
 import com.ms.backend.dtos.request.*;
-import com.ms.backend.dtos.response.ApiResponseDto;
-import com.ms.backend.dtos.response.MovieDto;
-import com.ms.backend.dtos.response.TheaterDetailsDto;
-import com.ms.backend.dtos.response.TheaterDto;
+import com.ms.backend.dtos.response.*;
 import com.ms.backend.services.MovieService;
+import com.ms.backend.services.TheaterAdminService;
 import com.ms.backend.services.TheaterService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -25,6 +23,7 @@ public class AdminController {
 
     private final TheaterService theaterService;
     private final MovieService movieService;
+    private final TheaterAdminService theaterAdminService;
 
     @PostMapping("/theaters")
     public ResponseEntity<ApiResponseDto<TheaterDto>> theaterCreate(HttpServletRequest request, @Valid @RequestBody TheaterCreateDto body) {
@@ -94,6 +93,26 @@ public class AdminController {
         movieService.statusUpdate(body);
         ApiResponseDto<Void> apiResponse =
                 new ApiResponseDto<>(200, "movie status update successfully", null);
+        return ResponseEntity.status(200).body(apiResponse);
+    }
+
+    @PutMapping("/movies")
+    public ResponseEntity<ApiResponseDto<MovieDto>> movieUpdate(
+           @Valid @RequestBody MovieUpdateDto body
+    ) {
+        MovieDto update = movieService.update(body);
+        ApiResponseDto<MovieDto> apiResponse =
+                new ApiResponseDto<>(200, "movie status update successfully", update);
+        return ResponseEntity.status(200).body(apiResponse);
+    }
+
+    @GetMapping("/theaters/{theaterId}/theater-admins")
+    public ResponseEntity<ApiResponseDto<List<TheaterAdminDto>>> getTheaterAdmins(
+            @PathVariable Long theaterId
+    ) {
+        List<TheaterAdminDto> theaterAdmins = theaterAdminService.listByTheaterId(theaterId);
+        ApiResponseDto<List<TheaterAdminDto>> apiResponse =
+                new ApiResponseDto<>(200, "movie status update successfully", theaterAdmins);
         return ResponseEntity.status(200).body(apiResponse);
     }
 

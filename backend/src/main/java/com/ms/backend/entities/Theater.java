@@ -36,7 +36,7 @@ public class Theater {
     private TheaterStatus status = TheaterStatus.ACTIVE;
 
     @ManyToOne
-    @JoinColumn(name = "crated_by",nullable = false)
+    @JoinColumn(name = "crated_by",nullable = false,updatable = false)
     private Admin createdBy;
 
     @CreatedDate

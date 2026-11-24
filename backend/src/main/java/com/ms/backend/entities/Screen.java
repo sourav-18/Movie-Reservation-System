@@ -29,6 +29,6 @@ public class Screen {
     private List<Seat> seats=new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "crated_by")
+    @JoinColumn(name = "crated_by",updatable = false)
     private TheaterAdmin createdBy;
 }

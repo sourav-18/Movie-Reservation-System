@@ -13,4 +13,8 @@ public class AdminDto {
     private String email;
     @JsonIgnore
     private String token;
+
+    public static class TheaterDto {
+
+    }
 }

@@ -41,7 +41,7 @@ public class Seat {
     private SeatStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "crated_by",nullable = false)
+    @JoinColumn(name = "crated_by",nullable = false,updatable = false)
     private TheaterAdmin createdBy;
 
 }

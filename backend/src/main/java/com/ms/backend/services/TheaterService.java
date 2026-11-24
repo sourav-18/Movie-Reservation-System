@@ -56,6 +56,7 @@ public class TheaterService {
         theaterRepository.save(newTheater);
         TheaterAdminCreateDto theaterAdminDto = theaterAdminMapper.toDto(body);
         theaterAdminService.create(theaterAdminDto, newTheater);
+        //todo sent password in main
         return TheaterMapper.toDto(newTheater);
     }
 
@@ -97,6 +98,10 @@ public class TheaterService {
         theater.setCity(city);
         return TheaterMapper.toDto(theater);
     }
+
+
+
+
 
 
 }

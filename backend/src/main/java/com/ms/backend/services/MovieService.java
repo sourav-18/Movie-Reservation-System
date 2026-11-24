@@ -2,6 +2,7 @@ package com.ms.backend.services;
 
 import com.ms.backend.dtos.request.MovieCreateDto;
 import com.ms.backend.dtos.request.MovieStatusUpdateDto;
+import com.ms.backend.dtos.request.MovieUpdateDto;
 import com.ms.backend.dtos.request.TheaterStatusUpdateDto;
 import com.ms.backend.dtos.response.MovieDto;
 import com.ms.backend.entities.Category;
@@ -63,5 +64,27 @@ public class MovieService {
             throw new DataNotFoundException("Movie not found");
         }
     }
+
+    @Transactional
+    public MovieDto update(MovieUpdateDto body){
+        List<Category> categories = categoryRepository.findAllById(body.getCategoryIds());
+        long count = categories.stream().filter((item) -> item.getStatus() == CategoryStatus.ACTIVE).count();
+
+        if (count != body.getCategoryIds().size()) {
+            throw new DataNotFoundException("category id not found");
+        }
+
+        Movie movie = movieRepository.findById(body.getId())
+                .orElseThrow(() -> new DataNotFoundException("Movie not found"));
+        movie.setTitle(body.getTitle());
+        movie.setDuration(body.getDuration());
+        movie.setThumbnail(body.getThumbnail());
+        movie.setDescription(body.getDescription());
+        movie.setStatus(body.getStatus());
+        movie.setCategories(categories);
+        movie.setCreatedBy(adminRepository.getReferenceById(2L));
+        return MovieMapper.toDto(movie);
+    }
+
 
 }
