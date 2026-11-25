@@ -7,12 +7,17 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "seats")
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "seats",indexes = {
+        @Index(name = "ind_seats_status",columnList = "Status"),
+        @Index(name = "ind_seats_row_number",columnList = "rowNumber"),
+        @Index(name = "ind_seats_column_number",columnList = "columnNumber")
+})
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

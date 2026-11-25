@@ -29,7 +29,7 @@ public class TheaterAdminController {
 
     @GetMapping("/my-theater")
     public ResponseEntity<ApiResponseDto<TheaterDto>> getMyTheaterDetails(HttpServletRequest request) {
-        Long theaterAdminId = Long.valueOf((String) request.getAttribute("auth-id"));
+        Long theaterAdminId = (Long) request.getAttribute("auth-id");
         TheaterDto theaterDto = theaterService.getMyTheaterDetails(theaterAdminId);
         ApiResponseDto<TheaterDto> apiResponse =
                 new ApiResponseDto<>(200, "Theater details fetch successfully", theaterDto);
@@ -38,7 +38,7 @@ public class TheaterAdminController {
 
     @PostMapping("/theater/screen")
     public ResponseEntity<ApiResponseDto<ScreenDto>> screenCreate(HttpServletRequest request, @Valid @RequestBody ScreenCreateDto body) {
-        Long theaterAdminId = Long.valueOf((String) request.getAttribute("auth-id"));
+        Long theaterAdminId = (Long) request.getAttribute("auth-id");
         ScreenDto screenDto = screenService.createScreen(body, theaterAdminId);
         ApiResponseDto<ScreenDto> apiResponse =
                 new ApiResponseDto<>(201, "Screen create successfully", screenDto);
@@ -49,7 +49,7 @@ public class TheaterAdminController {
     public ResponseEntity<ApiResponseDto<List<ScreenDto>>> getMyTheaterScreenDetails(
             HttpServletRequest request
             ) {
-        Long theaterAdminId = Long.valueOf((String) request.getAttribute("auth-id"));
+        Long theaterAdminId = (Long) request.getAttribute("auth-id");
         List<ScreenDto> screens= screenService.getScreenByTheater(theaterAdminId);
         ApiResponseDto<List<ScreenDto>> apiResponse =
                 new ApiResponseDto<>(200, "Theater screen fetch successfully",screens);
@@ -58,7 +58,7 @@ public class TheaterAdminController {
 
     @PostMapping("/theater/screen/seats")
     public ResponseEntity<ApiResponseDto<SeatListDto>> seatCreate(HttpServletRequest request, @Valid @RequestBody SeatListCreateDto body) {
-        Long theaterAdminId = Long.valueOf((String) request.getAttribute("auth-id"));
+        Long theaterAdminId = (Long) request.getAttribute("auth-id");
         SeatListDto seatListDto = seatService.create(body, theaterAdminId);
         ApiResponseDto<SeatListDto> apiResponse =
                 new ApiResponseDto<>(201, "Seat create successfully", seatListDto);
@@ -70,7 +70,7 @@ public class TheaterAdminController {
             HttpServletRequest request,
             @PathVariable("screenId") Long screenId
     ) {
-        Long theaterAdminId = Long.valueOf((String) request.getAttribute("auth-id"));
+        Long theaterAdminId = (Long) request.getAttribute("auth-id");
         List<SeatDto> screens= seatService.getSeatByScreen(theaterAdminId,screenId);
         ApiResponseDto<List<SeatDto>> apiResponse =
                 new ApiResponseDto<>(200, "Theater screen seats fetch successfully",screens);

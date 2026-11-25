@@ -63,7 +63,9 @@ public class TheaterService {
     public TheaterDto getMyTheaterDetails(Long theaterAdminId) {
         TheaterAdmin theaterAdmin = theaterAdminRepository.findById(theaterAdminId)
                 .orElseThrow(() -> new DataNotFoundException("Theater admin not found"));
-        return TheaterMapper.toDto(theaterAdmin.getTheater());
+        TheaterDto dto = TheaterMapper.toDto(theaterAdmin.getTheater());
+        dto.setCreatedBy(null);
+        return dto;
     }
 
     public List<TheaterDetailsDto> getTheaters(int page, int limit) {
@@ -99,9 +101,11 @@ public class TheaterService {
         return TheaterMapper.toDto(theater);
     }
 
-
-
-
+    public boolean isActive(Long theaterId) {
+        Theater theater = theaterRepository.findById(theaterId).orElse(null);
+        if (theater == null || theater.getStatus() == TheaterStatus.INACTIVE) return false;
+        return true;
+    }
 
 
 }

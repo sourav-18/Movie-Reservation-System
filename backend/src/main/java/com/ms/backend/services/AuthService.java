@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -38,7 +40,10 @@ public class AuthService {
             throw new InActiveStatusException("Your account is inactive. Please contact support.", HttpStatus.FORBIDDEN);
         }
 
-        String token = jwtService.generateToken(admin.getId().toString(), "admin");
+        HashMap<String, Object> claims = new HashMap<>();
+        claims.put("auth-id", admin.getId());
+        claims.put("Role", "admin");
+        String token = jwtService.generateToken(admin.getId().toString(), claims);
         AdminDto adminDto = authMapper.toDto(admin);
         adminDto.setToken(token);
         return adminDto;
@@ -52,7 +57,11 @@ public class AuthService {
         if (theaterAdmin.getStatus() != TheaterAdminStatus.ACTIVE) {
             throw new InActiveStatusException("Your account is inactive. Please contact support.", HttpStatus.FORBIDDEN);
         }
-        String token = jwtService.generateToken(theaterAdmin.getId().toString(), "theater-admin");
+        HashMap<String, Object> claims = new HashMap<>();
+        claims.put("theater-id", theaterAdmin.getTheater().getId());
+        claims.put("auth-id", theaterAdmin.getId());
+        claims.put("Role", "theater-admin");
+        String token = jwtService.generateToken(theaterAdmin.getId().toString(), claims);
         TheaterAdminDto theaterAdminDto = authMapper.toDto(theaterAdmin);
         theaterAdminDto.setToken(token);
         return theaterAdminDto;

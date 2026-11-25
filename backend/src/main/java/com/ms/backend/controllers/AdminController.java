@@ -27,7 +27,7 @@ public class AdminController {
 
     @PostMapping("/theaters")
     public ResponseEntity<ApiResponseDto<TheaterDto>> theaterCreate(HttpServletRequest request, @Valid @RequestBody TheaterCreateDto body) {
-        Long adminId = Long.valueOf((String) request.getAttribute("auth-id"));
+        Long adminId = (Long) request.getAttribute("auth-id");
         TheaterDto theaterDto = theaterService.create(body, adminId);
         ApiResponseDto<TheaterDto> apiResponse =
                 new ApiResponseDto<>(201, "Theater Create successfully", theaterDto);
@@ -68,7 +68,7 @@ public class AdminController {
     public ResponseEntity<ApiResponseDto<MovieDto>> create(
             HttpServletRequest request,
             @Valid @RequestBody MovieCreateDto dto) {
-        Long adminId = Long.valueOf((String) request.getAttribute("auth-id"));
+        Long adminId = (Long) request.getAttribute("auth-id");
         MovieDto movieDto = movieService.create(dto, adminId);
         ApiResponseDto<MovieDto> apiResponse =
                 new ApiResponseDto<>(201, "movie create successfully", movieDto);
@@ -112,7 +112,7 @@ public class AdminController {
     ) {
         List<TheaterAdminDto> theaterAdmins = theaterAdminService.listByTheaterId(theaterId);
         ApiResponseDto<List<TheaterAdminDto>> apiResponse =
-                new ApiResponseDto<>(200, "movie status update successfully", theaterAdmins);
+                new ApiResponseDto<>(200, "Theater admin fetch successfully", theaterAdmins);
         return ResponseEntity.status(200).body(apiResponse);
     }
 

@@ -7,10 +7,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "theater_admins")
 @Getter
 @Setter
 @ToString
+@Table(name = "theater_admins", indexes = {
+        @Index(name = "ind_theater_admins_status", columnList = "Status")
+})
 public class TheaterAdmin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

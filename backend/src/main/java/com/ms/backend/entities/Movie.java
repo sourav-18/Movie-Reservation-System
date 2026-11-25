@@ -9,12 +9,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import java.util.List;
 
 @Entity
-@Table(name = "movies")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "movies",indexes = {
+        @Index(name = "ind_movies_status",columnList = "Status")
+})
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

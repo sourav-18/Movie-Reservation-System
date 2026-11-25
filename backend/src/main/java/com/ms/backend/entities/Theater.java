@@ -12,13 +12,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="theaters")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "theaters", indexes = {
+        @Index(name = "ind_theaters_status", columnList = "Status")
+})
 public class Theater {
 
     @Id
@@ -36,7 +38,7 @@ public class Theater {
     private TheaterStatus status = TheaterStatus.ACTIVE;
 
     @ManyToOne
-    @JoinColumn(name = "crated_by",nullable = false,updatable = false)
+    @JoinColumn(name = "crated_by", nullable = false, updatable = false)
     private Admin createdBy;
 
     @CreatedDate

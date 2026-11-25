@@ -10,9 +10,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "show_times")
 @Getter
 @Setter
+@Table(name = "show_times",indexes = {
+        @Index(name = "ind_show_times_status",columnList = "Status"),
+        @Index(name = "ind_show_times_date",columnList = "date"),
+        @Index(name = "ind_show_times_stat_time",columnList = "startTime"),
+})
 public class ShowTime {
 
     @Id
@@ -32,7 +36,7 @@ public class ShowTime {
     private Screen screen;
 
     @Column(nullable = false)
-    private LocalDate localDate;
+    private LocalDate date;
 
     @Column(nullable = false)
     private LocalTime startTime;
